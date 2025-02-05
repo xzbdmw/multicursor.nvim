@@ -8,7 +8,7 @@ https://github.com/user-attachments/assets/a8c136dc-4786-447b-95c0-8e2a48f5776f
 
 - Visual and select modes with char/line/block selections
 - Normal, insert, replace modes
-- Undo/redo
+- Undo/redo [(if you are using tzachar/highlight-undo.nvim)](##Work-with-highlight-undo.nvim)
 - Virtualedit
 - Autocompletion
 - Snippet expansion (use `vim.snippet.expand`)
@@ -170,3 +170,12 @@ All of the provided features are implemented using the Cursor API, which is
 accessible for writing your own complex multi-cursor logic. You can view
 the docs at `:h multicursor-api`.
 
+## Work-with-highlight-undo.nvim
+It uses `vim.cmd("undo")` instead of a mapping, the workaround here is setting
+buffer local keys and delete it afterwards:
+```lua
+-- When multi-cursor strats
+vim.keymap.set("u", "u", { buffer = true })
+-- When it ends
+vim.keymap.del("u", "u", {buffer = true })
+```
