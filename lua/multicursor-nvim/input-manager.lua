@@ -82,11 +82,17 @@ function InputManager:setup(nsid)
     end
 
     util.au("SafeState", "*", function()
+        if not vim.g.mc_active then
+            return
+        end
         self:_onSafeState()
     end)
 
     vim.on_key(
         function (key, typed)
+            if not vim.g.mc_active then
+                return
+            end
             self:_onKey(key, typed)
         end,
         self._nsid

@@ -1265,12 +1265,18 @@ end
 --- @param cursors Cursor[]
 --- @return number[]
 local function packRedoCursors(cursors)
+    if state.mainCursor._changePos == nil then
+        return nil
+    end
     local data = {}
     data[1] = state.mainCursor._id
     data[2] = state.mainCursor._redoChangePos[2]
     data[3] = state.mainCursor._redoChangePos[3]
     local i = 4
     for _, cursor in ipairs(cursors) do
+        if cursor._redoChangePos == nil then
+            return nil
+        end
         data[i] = cursor._enabled and cursor._id or -cursor._id
         data[i + 1] = cursor._redoChangePos[2]
         data[i + 2] = cursor._redoChangePos[3]
@@ -1282,12 +1288,18 @@ end
 --- @param cursors Cursor[]
 --- @return number[]
 local function packUndoCursors(cursors)
+    if state.mainCursor._changePos == nil then
+        return nil
+    end
     local data = {}
     data[1] = state.mainCursor._id
     data[2] = state.mainCursor._changePos[2]
     data[3] = state.mainCursor._changePos[3]
     local i = 4
     for _, cursor in ipairs(cursors) do
+        if cursor._changePos == nil then
+            return nil
+        end
         if cursor._enabled then
             data[i] = cursor._id
             data[i + 1] = cursor._changePos[2]
